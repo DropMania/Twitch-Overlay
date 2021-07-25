@@ -1,26 +1,64 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="messages">
+        <Message
+            v-for="message in messages"
+            :key="message"
+            :message="message"
+        />
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import tmi from 'tmi.js'
+import { ref } from 'vue'
+import Message from './components/Message.vue'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    components: {
+        Message,
+    },
+    setup() {
+        let messages = ref([])
+
+        const client = new tmi.Client({
+            channels: ['DropManiaOfficial'],
+        })
+
+        client.connect()
+
+        client.on('message', (channel, tags, message, self) => {
+            console.log({ tags, channel, content: message })
+            messages.value.push({
+                tags,
+                channel,
+                content: message,
+                timestamp: new Date().getTime(),
+            })
+        })
+
+        return {
+            messages,
+        }
+    },
 }
 </script>
 
 <style>
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+html,
+body,
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    width: 100%;
+    height: 100%;
+}
+.messages {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
 }
 </style>

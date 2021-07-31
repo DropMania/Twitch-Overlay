@@ -1,4 +1,5 @@
 <template>
+    <!-- <button @click="addMessage">add</button> -->
     <div class="messages">
         <Message
             v-for="message in messages"
@@ -35,8 +36,25 @@ export default {
             })
         })
 
+        function addMessage() {
+            messages.value.push({
+                tags: {
+                    'display-name': 'DropMania',
+                    color: '#00ff00',
+                    'user-id': '91642630',
+                    badges: {
+                        premium: 1,
+                        broadcaster: 1,
+                    },
+                },
+                channel: '',
+                content:
+                    'Lorem ipsum dolor sit amet Kappa consectetur adipisicing elit. Beatae inventore accusantium suscipit, dolor ipsam quasi rem nesciunt minima facere corporis hic iure omnis, dignissimos recusandae ad, rerum facilis illo saepe alias distinctio odio molestias. Facilis, incidunt quo. Quidem totam nostrum fugit impedit, laudantium blanditiis molestias voluptatum provident, dolorem autem at.',
+            })
+        }
         return {
             messages,
+            addMessage,
         }
     },
 }
@@ -53,12 +71,12 @@ body,
 #app {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 .messages {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
 }
 </style>
